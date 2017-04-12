@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.user.customlistview.SingleContactActivity">
+
+
+
+    <ImageView
+        android:id="@+id/display_contact_img"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+    <TextView
+        android:id="@+id/ContactName"
+        android:paddingTop="10dp"
+        android:textSize="15dp"
+        android:paddingLeft="5dp"
+        android:textColor="#BA68C8"
+        android:text="kjnsdf"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <TextView
+        android:id="@+id/Contactnumber"
+        android:textSize="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="#4DD0E1"
+        android:text="kjnsdf"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>
