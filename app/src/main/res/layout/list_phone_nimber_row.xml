@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/phoneText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="6"
+        android:paddingLeft="0dp"
+        android:paddingStart="20dp"
+        android:paddingTop="17dp"
+        android:textSize="20dp"
+        tools:text="656754675476" />
+
+    <ImageView
+        android:id="@+id/callImg"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:padding="10dp" />
+
+    <ImageView
+        android:id="@+id/smsImg"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:padding="10dp" />
+
+
+</LinearLayout>

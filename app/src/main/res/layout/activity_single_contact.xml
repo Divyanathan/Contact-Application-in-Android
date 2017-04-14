@@ -5,31 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.user.customlistview.SingleContactActivity">
+    tools:context="com.example.user.customlistview.Ui.SingleContactActivity">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
 
     <ImageView
         android:id="@+id/display_contact_img"
+        android:background="#F5F5F5"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="match_parent" />
     <TextView
+        android:layout_alignParentBottom="true"
+        android:singleLine="true"
+        android:background="#07000000"
+        android:textAlignment="center"
         android:id="@+id/ContactName"
-        android:paddingTop="10dp"
-        android:textSize="15dp"
+        android:paddingTop="15dp"
+        android:textSize="20dp"
         android:paddingLeft="5dp"
-        android:textColor="#BA68C8"
+        android:textColor="#FFFFFF"
         android:text="kjnsdf"
 
         android:layout_width="match_parent"
         android:layout_height="50dp" />
-    <TextView
-        android:id="@+id/Contactnumber"
-        android:textSize="15dp"
-        android:paddingLeft="15dp"
-        android:textColor="#4DD0E1"
-        android:text="kjnsdf"
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/phoneNumberRecycle"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/phone_number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        >
+
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -1,14 +1,12 @@
-package com.example.user.customlistview;
+package com.example.user.customlistview.Ui;
 
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
@@ -20,7 +18,8 @@ import android.widget.AdapterView;
 
 import android.widget.ListView;
 
-import java.io.ByteArrayInputStream;
+import com.example.user.customlistview.Adapter.CustomListViewAdapter;
+import com.example.user.customlistview.R;
 
 public class MainActivity extends AppCompatActivity implements  android.app.LoaderManager.LoaderCallbacks<Cursor> {
 

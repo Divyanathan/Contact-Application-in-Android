@@ -1,7 +1,6 @@
-package com.example.user.customlistview;
+package com.example.user.customlistview.Adapter;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.user.customlistview.Custom.RoundedTransformation;
+import com.example.user.customlistview.R;
 import com.squareup.picasso.Picasso;
 
 /**
