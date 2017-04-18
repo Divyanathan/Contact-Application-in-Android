@@ -1,4 +1,4 @@
-package com.example.user.customlistview.Custom;
+package com.example.user.customlistview.custom;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

@@ -1,11 +1,10 @@
-package com.example.user.customlistview.Custom;
+package com.example.user.customlistview.custom;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 
 /**
  * Created by user on 14/04/17.

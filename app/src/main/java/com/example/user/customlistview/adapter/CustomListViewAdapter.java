@@ -1,4 +1,4 @@
-package com.example.user.customlistview.Adapter;
+package com.example.user.customlistview.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.user.customlistview.Custom.RoundedTransformation;
+import com.example.user.customlistview.custom.RoundedTransformation;
 import com.example.user.customlistview.R;
 import com.squareup.picasso.Picasso;
 
@@ -46,7 +46,7 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = mContext.getLayoutInflater();
         View listItemView = inflater.inflate(R.layout.list_layout, null, true);
         TextView lContactNameTextView = (TextView) listItemView.findViewById(R.id.name);
-        TextView lMobileNumberTextView = (TextView) listItemView.findViewById(R.id.no);
+        TextView lMobileNumberTextView = (TextView) listItemView.findViewById(R.id.contctId);
         ImageView lContactImageView=(ImageView) listItemView.findViewById(R.id.ContactImage);
 
         lContactNameTextView.setText(mContactName[position]);

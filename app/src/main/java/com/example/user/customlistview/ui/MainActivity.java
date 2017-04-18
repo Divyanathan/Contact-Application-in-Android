@@ -1,4 +1,4 @@
-package com.example.user.customlistview.Ui;
+package com.example.user.customlistview.ui;
 
 
 import android.Manifest;
@@ -18,7 +18,7 @@ import android.widget.AdapterView;
 
 import android.widget.ListView;
 
-import com.example.user.customlistview.Adapter.CustomListViewAdapter;
+import com.example.user.customlistview.adapter.CustomListViewAdapter;
 import com.example.user.customlistview.R;
 
 public class MainActivity extends AppCompatActivity implements  android.app.LoaderManager.LoaderCallbacks<Cursor> {
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         setContentView(R.layout.activity_main);
 
         mListView = (ListView) findViewById(R.id.list);
+        mListView.setTextFilterEnabled(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setFastScrollAlwaysVisible(true);
 
          mMoveToSingleContact=new Intent(this,SingleContactActivity.class);
         // if(PackageManager.PERMISSION_DENIED)
@@ -111,46 +114,6 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
 
     }
 
-    // Withot Loader
-
-   /* void getContactDeatails() {
-
-  *//*  GetContact getContact=new GetContact(this);
-        getContact.execute();*//*
-
-        Uri lContactId = ContactsContract.Contacts.CONTENT_URI;
-
-        Uri lPhoneNumberUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-
-        String lContactName = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
-        String lContactMobileNumber = ContactsContract.CommonDataKinds.Phone.NUMBER;
-
-        mContentResolver = getContentResolver();
-        mCursor = mContentResolver.query(lContactId, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        mContactId = new String[mCursor.getCount()];
-        mContactName = new String[mCursor.getCount()];
-        if (mCursor.getCount() > 0) {
-            int count = 0;
-            while (mCursor.moveToNext()) {
-                mContactName[count] = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                mContactId[count++] = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts._ID));
-            }
-        }
-
-        CustomListViewAdapter mCustomList = new CustomListViewAdapter(this, mContactName, mContactId);
-        mListView.setAdapter(mCustomList);
-
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(MainActivity.this, mContactId[position], Toast.LENGTH_SHORT).show();
-            }
-
-        });
-    }*/
-
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -197,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         mListView.setAdapter(mCustomList);
 
 
-        //final Intent pMoveToSingleConatctActivity=new Intent(this,SingleContactActivity.class);
+        final Intent pMoveToSingleConatctActivity=new Intent(this,SingleContactActivity.class);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

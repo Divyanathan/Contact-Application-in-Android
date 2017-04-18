@@ -1,4 +1,4 @@
-package com.example.user.customlistview.Ui;
+package com.example.user.customlistview.ui;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,9 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.customlistview.Adapter.PhoneNumberRecylerViewAdapter;
-import com.example.user.customlistview.Custom.RecyclerItemClickListener;
+import com.example.user.customlistview.adapter.PhoneNumberRecylerViewAdapter;
+import com.example.user.customlistview.custom.RecyclerItemClickListener;
 import com.example.user.customlistview.R;
+import com.example.user.customlistview.database.DataBaseHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,6 +52,8 @@ public class SingleContactActivity extends AppCompatActivity implements android.
 
     private PhoneNumberRecylerViewAdapter lPhoneNumberRecylerViewAdapter;
 
+    DataBaseHelper mDataBaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -58,6 +62,8 @@ public class SingleContactActivity extends AppCompatActivity implements android.
 
 
         setContentView(R.layout.activity_single_contact);
+
+        mDataBaseHelper = new DataBaseHelper(this, null, null, 1);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mNameTextView = (TextView) findViewById(R.id.ContactName);
@@ -137,28 +143,16 @@ public class SingleContactActivity extends AppCompatActivity implements android.
 
     private void ensurePermissions() {
 
-
-
-
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CALL_PHONE)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
 
             } else {
-
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CALL_PHONE},
                         0);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
 
 
@@ -185,7 +179,12 @@ public class SingleContactActivity extends AppCompatActivity implements android.
         switch (loader.getId()) {
 
             case 1:
-                if (pCursor.getCount() > 0) {
+
+                String lContactName,lContactImage;
+
+                Cursor lContactNameCursor=mDataBaseHelper.getNamrAndImage();
+
+               /** if (pCursor.getCount() > 0) {
                     pCursor.moveToFirst();
 
                     mContactName = pCursor.getString(0);
@@ -200,6 +199,7 @@ public class SingleContactActivity extends AppCompatActivity implements android.
 
                     lCorsor2.moveToFirst();
 
+                  
                     Picasso.with(this)
                             .load(lCorsor2.getString(0))
                             .placeholder(R.drawable.contact_person_icon)
@@ -219,58 +219,135 @@ public class SingleContactActivity extends AppCompatActivity implements android.
                 }
 
                 Cursor lCorsor3 = lContentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                        new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                        new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE},
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{mContactId}, null);
                 if (lCorsor3.getCount() > 0) {
 
-                    // mPhoneNumer=new String[pCursor.getCount()];
                     int id = 0;
                     if (lCorsor3.moveToFirst()) {
 
 
+                        String lPhoneNumbrType= (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(this.getResources(), lCorsor3.getInt(1), "");
+
+                        Log.d("Phone number lable","checking"+lPhoneNumbrType);
                         //  mPhoneNumer[id]=pCursor.getString(pCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        mPhoneNumer.add(lCorsor3.getString(0));
+                        mPhoneNumer.add(lCorsor3.getString(lCorsor3.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
                         mISNumberOrEmail.add("number");
+
+                        String lksdjf=lCorsor3.getString(lCorsor3.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                        String kj=lksdjf;
                         id++;
 
                         while (lCorsor3.moveToNext()) {
-                            mPhoneNumer.add(lCorsor3.getString(0));
+                            mPhoneNumer.add(lCorsor3.getString(lCorsor3.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
                             mISNumberOrEmail.add("number");
 
-                            // mPhoneNumer[id]=pCursor.getString(pCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            String lPhoneNumbrType2= (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(this.getResources(), lCorsor3.getInt(1), "");
+                            Log.i("Phone number lable",lPhoneNumbrType2);
+
+                            String jdsf= (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(this.getResources(), lCorsor3.getInt(1), "");
+                            String ljd=jdsf;
                             id++;
                         }
 
                     }
                 }
 
-                Cursor lCorsor4 = lContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                        new String[]{ContactsContract.CommonDataKinds.Email.DATA},
-                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{mContactId}, null);
 
+
+                Cursor lCorsor4 = lContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                        new String[]{ContactsContract.CommonDataKinds.Email.DATA,ContactsContract.CommonDataKinds.Email.TYPE},
+                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{mContactId}, null);
 
                 if (lCorsor4.getCount() > 0) {
 
-                    // mPhoneNumer=new String[lCorsor4.getCount()];
                     int id = 0;
                     if (lCorsor4.moveToFirst()) {
 
 
-                        //  mPhoneNumer[id]=lCorsor4.getString(lCorsor4.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
                         mPhoneNumer.add(lCorsor4.getString(0));
                         mISNumberOrEmail.add("email");
                         id++;
-
+                        String email = lCorsor4.getString(
+                                lCorsor4.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                        String emailType = lCorsor4.getString(
+                                lCorsor4.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
+                        String k=emailType;
+                        k=email;
                         while (lCorsor4.moveToNext()) {
                             mPhoneNumer.add(lCorsor4.getString(0));
                             mISNumberOrEmail.add("email");
-                            // mPhoneNumer[id]=lCorsor4.getString(lCorsor4.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
                             id++;
                         }
 
                     }
                 }
 
+
+               //for organization
+
+                String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+                String[] orgWhereParams = new String[]{mContactId,
+                        ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
+                Cursor orgCur = lContentResolver.query(ContactsContract.Data.CONTENT_URI,
+                        null, orgWhere, orgWhereParams, null);
+                if (orgCur.moveToFirst()) {
+                    String orgName = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DATA));
+                    String title = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
+                     String a=orgName;
+                    a=title;
+                }
+
+               // for IM
+
+                String imWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+                String[] imWhereParams = new String[]{mContactId,
+                        ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE};
+                Cursor imCur = lContentResolver.query(ContactsContract.Data.CONTENT_URI,
+                        null, imWhere, imWhereParams, null);
+                if (imCur.moveToFirst()) {
+                    String imName = imCur.getString(
+                            imCur.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA));
+
+                    String lOrgType= (String) ContactsContract.CommonDataKinds.Im.getTypeLabel(this.getResources(),
+                            imCur.getInt(imCur.getColumnIndex(ContactsContract.CommonDataKinds.Im.PROTOCOL)), "");
+
+                    String kkkk=lOrgType;
+                    String imType;
+                    imType = imCur.getString(
+                            imCur.getColumnIndex(ContactsContract.CommonDataKinds.Im.PROTOCOL));
+                    String k=imName;
+                    k=imType;
+                }
+
+
+                //For Adderess
+
+                String addrWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+                String[] addrWhereParams = new String[]{mContactId,
+                        ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE};
+                Cursor addrCur = lContentResolver.query(ContactsContract.Data.CONTENT_URI, null, null, null, null);
+                while(addrCur.moveToNext()) {
+                    String poBox = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
+                    String street = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    String city = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    String state = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    String postalCode = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+                    String country = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                    String type = addrCur.getString(
+                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE));
+
+                    // Do something with these....
+
+                }
 
                 mPhoneNumberTemp =new ArrayList<>(mPhoneNumer);
                 mISNumberOrEmailTemp=new ArrayList<>(mISNumberOrEmail);
@@ -282,7 +359,7 @@ public class SingleContactActivity extends AppCompatActivity implements android.
                     mPhoneNumberRecyclerView.setAdapter(lPhoneNumberRecylerViewAdapter);
                 }
                 mPhoneNumer.clear();
-                mISNumberOrEmail.clear();
+                mISNumberOrEmail.clear();*/
                 break;
 
         }

@@ -1,4 +1,4 @@
-package com.example.user.customlistview.Adapter;
+package com.example.user.customlistview.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.user.customlistview.Custom.RoundedTransformation;
+import com.example.user.customlistview.custom.RoundedTransformation;
 import com.example.user.customlistview.R;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +23,7 @@ public class PhoneNumberRecylerViewAdapter extends RecyclerView.Adapter<PhoneNum
 
     //MyViewHolder holder;
 
-   // String[] mPhoneNumber;
+   // String[] mContactName;
     ArrayList<String> mPhoneNumber=new ArrayList<String>();
     ArrayList<String> mIsNumberEmail=new ArrayList<String>();
     Context mContext;
