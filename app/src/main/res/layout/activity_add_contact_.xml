@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:id="@+id/edit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/name_text_vieww"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#40C4FF"
+            android:paddingTop="8dp"
+            android:paddingLeft="6dp"
+            android:text="jklsd"/>
+        <EditText
+            android:id="@+id/name_edit_textt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="name"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/phoneLablee"
+                android:paddingLeft="6dp"
+                android:text="phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+            <ImageView
+                android:id="@+id/addphonee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_add_black_24dp"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/phone_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/emailLablee"
+                android:paddingLeft="6dp"
+                android:text="email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+            <ImageView
+                android:id="@+id/addemaill"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/eamil_layoutt"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/addressLablee"
+                android:paddingLeft="6dp"
+                android:text="address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+            <ImageView
+                android:id="@+id/addAddresss"
+                android:layout_width="0dp"
+                android:paddingLeft="6dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/address_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/imLablee"
+                android:text="im"
+                android:paddingLeft="6dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+            <ImageView
+                android:id="@+id/addimm"
+                android:layout_width="0dp"
+                android:paddingLeft="6dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/im_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/websiteLablee"
+                android:text="website"
+                android:paddingLeft="6dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+            <ImageView
+                android:id="@+id/addwebsitee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/websit_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/relationLablee"
+                android:text="relation"
+                android:paddingLeft="6dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+            <ImageView
+                android:id="@+id/addrelationn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/relation_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/phoneticLablee"
+                android:text="phonetic name"
+                android:paddingLeft="6dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/phonetic_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+
+                android:id="@+id/phoneticEditTextt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="phonetic name"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/notesLablee"
+                android:paddingLeft="6dp"
+                android:text="notes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/notes_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+
+                android:id="@+id/notesEditTextt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="notes "/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/orgLablee"
+                android:paddingLeft="6dp"
+                android:text="org"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/org_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+
+                android:id="@+id/orgEditTextt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="org "/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/nicknameLablee"
+                android:paddingLeft="6dp"
+                android:text="nick name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/nickname_layoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+
+                android:id="@+id/nickNameEditTextt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="nick name "/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+</ScrollView>

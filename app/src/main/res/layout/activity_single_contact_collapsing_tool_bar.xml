@@ -44,7 +44,8 @@
 
          <android.support.v7.widget.RecyclerView
              android:id="@+id/singleContactRecyclerView"
-           android:background="@color/Blue"
+             android:paddingTop="20dp"
+           android:background="@color/white"
            android:layout_width="match_parent"
            android:layout_height="match_parent">
 

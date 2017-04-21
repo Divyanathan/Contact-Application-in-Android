@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:id="@+id/edit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#40C4FF"
+                    android:paddingTop="8dp"
+                    android:paddingLeft="6dp"
+                    android:text="jklsd"/>
+                <EditText
+                    android:id="@+id/name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="lksjdfk;sadj"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/phoneLable"
+                            android:paddingLeft="6dp"
+                            android:text="phone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+                        <ImageView
+                            android:id="@+id/addphone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_add_black_24dp"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/emailLable"
+                            android:paddingLeft="6dp"
+                            android:text="email"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+                        <ImageView
+                            android:id="@+id/addemail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/eamil_layout"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/addressLable"
+                            android:paddingLeft="6dp"
+                            android:text="address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+                        <ImageView
+                            android:id="@+id/addAddress"
+                            android:layout_width="0dp"
+                            android:paddingLeft="6dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/imLable"
+                            android:text="im"
+                            android:paddingLeft="6dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+                        <ImageView
+                            android:id="@+id/addim"
+                            android:layout_width="0dp"
+                            android:paddingLeft="6dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/im_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/websiteLable"
+                            android:text="website"
+                            android:paddingLeft="6dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+                        <ImageView
+                            android:id="@+id/addwebsite"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/websit_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/relationLable"
+                            android:text="relation"
+                            android:paddingLeft="6dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+                        <ImageView
+                            android:id="@+id/addrelation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/relation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/phoneticLable"
+                            android:text="phonetic name"
+                            android:paddingLeft="6dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/phonetic_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <EditText
+
+                            android:id="@+id/phoneticEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="phonetic name"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/notesLable"
+                            android:paddingLeft="6dp"
+                            android:text="notes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/notes_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <EditText
+
+                            android:id="@+id/notesEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="notes "/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/orgLable"
+                            android:paddingLeft="6dp"
+                            android:text="org"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/org_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <EditText
+
+                            android:id="@+id/orgEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="org "/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/nicknameLable"
+                            android:paddingLeft="6dp"
+                            android:text="nick name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            />
+
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/nickname_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <EditText
+
+                            android:id="@+id/nickNameEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="nick name "/>
+                </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+</ScrollView>
+

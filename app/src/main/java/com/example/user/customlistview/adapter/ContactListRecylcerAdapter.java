@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.user.customlistview.R;
 import com.example.user.customlistview.custom.RoundedTransformation;
+import com.example.user.customlistview.jdo.ContactJDO;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,18 +22,18 @@ import java.util.ArrayList;
 public class ContactListRecylcerAdapter  extends RecyclerView.Adapter<ContactListRecylcerAdapter.MyViewHolder> {
 
 
-    ArrayList<String> mConactId =new ArrayList<String>();
-    ArrayList<String> mContactName =new ArrayList<String>();
-    ArrayList<String> mContactimageuri =new ArrayList<String>();
 
+
+    ArrayList<ContactJDO> mContactJDOArrayList;
+    ContactJDO mContactJDO;
     Context mContext;
 
-    public ContactListRecylcerAdapter(Context mContext,ArrayList<String> mConactId, ArrayList<String> mContactName, ArrayList<String> mContactimageuri) {
-        this.mConactId = mConactId;
-        this.mContactName = mContactName;
-        this.mContactimageuri = mContactimageuri;
+    public ContactListRecylcerAdapter( Context mContext,ArrayList<ContactJDO> mContactJDOArrayList) {
+        this.mContactJDOArrayList = mContactJDOArrayList;
         this.mContext = mContext;
     }
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,10 +68,12 @@ public class ContactListRecylcerAdapter  extends RecyclerView.Adapter<ContactLis
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        holder.mContactNameTextView.setText(mContactName.get(position));
-        holder.mContactId.setText(mConactId.get(position));
+        mContactJDO=mContactJDOArrayList.get(position);
+
+        holder.mContactNameTextView.setText(mContactJDO.getmContactName());
+        holder.mContactId.setText(mContactJDO.getmCotactId());
         Picasso.with(mContext)
-                .load(mContactimageuri.get(position))
+                .load(mContactJDO.getmCotactImage())
                 .placeholder(R.drawable.contact_img)
                 .resize(200, 200)
                 .transform(new RoundedTransformation(100, 1))
@@ -80,7 +83,7 @@ public class ContactListRecylcerAdapter  extends RecyclerView.Adapter<ContactLis
 
     @Override
     public int getItemCount() {
-        return mConactId.size();
+        return mContactJDOArrayList.size();
     }
 
 
