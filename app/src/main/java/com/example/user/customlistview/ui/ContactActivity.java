@@ -1,11 +1,8 @@
 package com.example.user.customlistview.ui;
 
 import android.Manifest;
-import android.app.LoaderManager;
 import android.content.ContentResolver;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,10 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,18 +20,22 @@ import android.widget.Toast;
 import com.example.user.customlistview.R;
 import com.example.user.customlistview.adapter.ContactListRecylcerAdapter;
 import com.example.user.customlistview.custom.RecyclerItemClickListener;
+import com.example.user.customlistview.database.ContactDetailsTable;
+import com.example.user.customlistview.database.CotactTable;
 import com.example.user.customlistview.database.DataBaseHelper;
-import com.example.user.customlistview.jdo.ContactDetailsJDO;
 import com.example.user.customlistview.jdo.ContactJDO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class ContactActivity extends AppCompatActivity  {
+public class ContactActivity extends AppCompatActivity  implements View.OnClickListener {
 
 
 
     DataBaseHelper mMataBaseHelper;
 
+    CotactTable mContactTable;
+    ContactDetailsTable mContactDetailsTable;
 
     final int RETRIVE_DATA_FROM_CONTACT = 1;
 
@@ -58,6 +55,9 @@ public class ContactActivity extends AppCompatActivity  {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mContactTable=new CotactTable(this);
+        mContactDetailsTable=new ContactDetailsTable(this);
+
         mMataBaseHelper = new DataBaseHelper(this, null, null, 1);
 
         mContactRecyclerView = (RecyclerView) findViewById(R.id.ContactlistRecycler);
@@ -70,9 +70,12 @@ public class ContactActivity extends AppCompatActivity  {
 
                         TextView lContactIdTextView = (TextView) view.findViewById(R.id.contctId);
                         final String lContactId = lContactIdTextView.getText().toString();
+
                         Intent mMoveToSingleContact = new Intent(view.getContext(), SingleContactActivityCollapsingToolBar.class);
                         mMoveToSingleContact.putExtra("Id", lContactId);
-                        startActivity(mMoveToSingleContact);
+
+                        startActivityForResult(mMoveToSingleContact,1);
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
 
                     }
 
@@ -107,11 +110,13 @@ public class ContactActivity extends AppCompatActivity  {
 
     void getContactFromLocalDataBase(){
 
-        Cursor lContactCursor = mMataBaseHelper.getNamrAndImage();
+        mContactTable.open();
+        Cursor lContactCursor = mContactTable.getNamrAndImage();
+
+
         if (lContactCursor.getCount() > 0 && lContactCursor.moveToNext()) {
 
             do {
-
                 ContactJDO mContactJDO=new ContactJDO();
                 mContactJDO.setmCotactId(lContactCursor.getString(lContactCursor.getColumnIndex(mMataBaseHelper.COLUMN_CONTACT_ID)));
                 mContactJDO.setmContactName(lContactCursor.getString(lContactCursor.getColumnIndex(mMataBaseHelper.COLUMN_CONTACT_NAME)));
@@ -122,6 +127,8 @@ public class ContactActivity extends AppCompatActivity  {
 
         }
 
+        mContactTable.close();
+        Collections.sort(mContactJDOArrayList);
         mContactListRecylcerAdapter = new ContactListRecylcerAdapter(this, new ArrayList<ContactJDO>(mContactJDOArrayList));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -250,9 +257,10 @@ public class ContactActivity extends AppCompatActivity  {
                 /**
                  * ***************************   Adding the contact data which has single value ***************************
                  */
-                mMataBaseHelper.addContact(Integer.parseInt(lContactId), lContactName, lNickName, lPhoneticname
+                mContactTable.open();
+                mContactTable.addContact(Integer.parseInt(lContactId), lContactName, lNickName, lPhoneticname
                         , lContactImage, lOrganization, lnote);
-
+                mContactTable.close();
 
                 /**
                  ******************************  Phone Number  *******************************
@@ -276,7 +284,10 @@ public class ContactActivity extends AppCompatActivity  {
                             String lPhoneNumber = lPhoneCursor.getString(lPhoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                             lType = "phone";
-                            mMataBaseHelper.addContactDetails(lType, lPhoneNumber, lContactId);
+
+                            mContactDetailsTable.open();
+                            mContactDetailsTable.addContactDetails(lType, lPhoneNumber, lContactId);
+                            mContactDetailsTable.close();
 
                         } while (lPhoneCursor.moveToNext());
 
@@ -306,7 +317,9 @@ public class ContactActivity extends AppCompatActivity  {
                                 lEmailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
 
                         lType = "email";
-                        mMataBaseHelper.addContactDetails(lType, lEmail, lContactId);
+                        mContactDetailsTable.open();
+                        mContactDetailsTable.addContactDetails(lType, lEmail, lContactId);
+                        mContactDetailsTable.close();
 
                     } while (lEmailCursor.moveToNext());
 
@@ -349,7 +362,9 @@ public class ContactActivity extends AppCompatActivity  {
                         String lAddress = street + ":" + city + ":" + state + ":" + postalCode + ":" + country;
 
                         lType = "address";
-                        mMataBaseHelper.addContactDetails(lType, lAddress, lContactId);
+                        mContactDetailsTable.open();
+                        mContactDetailsTable.addContactDetails(lType, lAddress, lContactId);
+                        mContactDetailsTable.close();
                     } while (lAddressCursor.moveToNext());
 
                 }
@@ -380,7 +395,9 @@ public class ContactActivity extends AppCompatActivity  {
                                 lIMCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
 
                         lType = "im";
-                        mMataBaseHelper.addContactDetails(lType, imName, lContactId);
+                        mContactDetailsTable.open();
+                        mContactDetailsTable.addContactDetails(lType, imName, lContactId);
+                        mContactDetailsTable.close();
 
                     } while (lImageCursor.moveToNext());
                 }
@@ -409,7 +426,9 @@ public class ContactActivity extends AppCompatActivity  {
                         String lWebsiteType = lWebsiteCursor.getString(1);
 
                         lType = "website";
-                        mMataBaseHelper.addContactDetails(lType, lWebSite, lContactId);
+                        mContactDetailsTable.open();
+                        mContactDetailsTable.addContactDetails(lType, lWebSite, lContactId);
+                        mContactDetailsTable.close();
 
                     } while (lWebsiteCursor.moveToNext());
                 }
@@ -433,7 +452,9 @@ public class ContactActivity extends AppCompatActivity  {
                         String lRelation = lRelationcCursor.getString(lRelationcCursor.getColumnIndex(ContactsContract.CommonDataKinds.Relation.NAME));
 
                         lType = "relation";
-                        mMataBaseHelper.addContactDetails(lType, lRelation, lContactId);
+                        mContactDetailsTable.open();
+                        mContactDetailsTable.addContactDetails(lType, lRelation, lContactId);
+
 
                     } while (lRelationcCursor.moveToNext());
 
@@ -498,30 +519,8 @@ public class ContactActivity extends AppCompatActivity  {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_contact_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.addButton:
 
 
-                Intent intent = new Intent(this, AddContact_Activity.class);
-                startActivityForResult(intent, 2);// Activity is started with requestCode 2
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -529,6 +528,19 @@ public class ContactActivity extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
 
 
+        if (requestCode == 1) {
+
+            if (resultCode == RESULT_OK) {
+
+                String message = data.getStringExtra("MESSAGE");
+
+
+                mContactJDOArrayList.clear();
+                getContactFromLocalDataBase();
+
+            }
+
+        }
         if (requestCode == 2) {
 
             if (resultCode == RESULT_OK) {
@@ -552,4 +564,12 @@ public class ContactActivity extends AppCompatActivity  {
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+
+        Intent intent = new Intent(this, EditContactActivity.class);
+        intent.putExtra("action", "add");
+        startActivityForResult(intent, 2);// Activity is started with requestCode 2
+        overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
+    }
 }

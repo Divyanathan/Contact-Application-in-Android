@@ -1,6 +1,7 @@
 package com.example.user.customlistview.ui;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +28,11 @@ import android.widget.Toast;
 import com.example.user.customlistview.R;
 import com.example.user.customlistview.adapter.SingleContactRecyclerAdapter;
 import com.example.user.customlistview.custom.RecyclerItemClickListener;
+import com.example.user.customlistview.database.ContactDetailsTable;
+import com.example.user.customlistview.database.CotactTable;
 import com.example.user.customlistview.database.DataBaseHelper;
 import com.example.user.customlistview.jdo.ContactDetailsJDO;
+import com.example.user.customlistview.utility.UtilityClass;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +45,7 @@ import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_R
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_WEBSITE;
 
 
-public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
+public class SingleContactActivityCollapsingToolBar extends AppCompatActivity implements View.OnClickListener {
 
 
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
@@ -57,12 +64,35 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
     RecyclerView mRecyclerView;
 
 
+    CotactTable mContactTable;
+
+    ContactDetailsTable mContactDetailsTable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_contact_collapsing_tool_bar);
 
+
+        Window window = this.getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
+
         mContactImageView = (ImageView) findViewById(R.id.contactImaeForCollapsing);
+
+        mContactTable=new CotactTable(this);
+        mContactTable.open();
+
+        mContactDetailsTable=new ContactDetailsTable(this);
+        mContactDetailsTable.open();
+
 
         mDataBaseHelper = new DataBaseHelper(this, null, null, 1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,7 +187,8 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
 
     void getConTactDetails(){
 
-        getContactDetails(COLUMN_TYPE_PHONE);
+        mContactDetailsTable.deleteNullValues();
+        getContactDetails(UtilityClass.COLUMN_TYPE_PHONE);
         getContactDetails(COLUMN_TYPE_EMAIL);
         getContactDetails(COLUMN_TYPE_ADDRESS);
         getContactDetails(COLUMN_TYPE_IM);
@@ -170,7 +201,11 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
 
     void getContact() {
 
-        Cursor lNameAndImageCursor = mDataBaseHelper.getCotact(mContactId);
+//        mContactTable.open();
+
+        Cursor lNameAndImageCursor = mContactTable.getCotact(mContactId);
+
+
 
         lNameAndImageCursor.moveToFirst();
 
@@ -211,6 +246,7 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
 
         String lNotes = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_NOTES));
 
+//        mContactTable.close();
 
         if (lNotes != null && !lNotes.isEmpty() && !lNotes.equals("null")) {
 
@@ -227,7 +263,7 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
 
     void getContactDetails(String pType) {
 
-        Cursor lContactDetailsCursor = mDataBaseHelper.retriveValue(mContactId, pType);
+        Cursor lContactDetailsCursor = mContactDetailsTable.retriveValue(mContactId, pType);
 
         if (lContactDetailsCursor.getCount() > 0 && lContactDetailsCursor.moveToFirst()) {
 
@@ -284,18 +320,51 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.editbutton:
 
+            case R.id.deltebutton:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setMessage("Are you want to DELETE the contact ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                mContactTable.deleteContactint(Integer.parseInt(mContactId));
+                                Intent intent1 = new Intent();
+
+                                intent1.putExtra("MESSAGE", "updated successfully");
+
+                                setResult(RESULT_OK, intent1);
+                                finish();
+                                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+
+
+                AlertDialog alert = builder.create();
+                alert.setTitle("Delete Contact Data");
+                alert.show();
+
+
+
+                break;
+            case R.id.editbutton:
                 Intent intent = new Intent(SingleContactActivityCollapsingToolBar.this, EditContactActivity.class);
                 intent.putExtra("contact_details", mCotactDetailsArrayList);
 
                 intent.putExtra("id", mContactId);
                 intent.putExtra("name", mCotactName);
-
-
+                intent.putExtra("action", "edit");
                 startActivityForResult(intent, 1);
-
-                break;
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -313,10 +382,20 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
                 String message = data.getStringExtra("MESSAGE");
 
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+
+                View view = this.getCurrentFocus();
+                if (view != null) {
+                 /*   InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
+
+                    getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+                    );
+                }
                 mCotactDetailsArrayList.clear();
 
                 getConTactDetails();
-                getContact();
                 sendTheValueToRecyler();
 
             }
@@ -325,8 +404,37 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        navigateToThePreviousActivity();
+
+    }
     public boolean onSupportNavigateUp() {
-        finish();
+        navigateToThePreviousActivity();
         return true;
+    }
+    void navigateToThePreviousActivity(){
+        Intent intent = new Intent();
+
+        intent.putExtra("MESSAGE", "updated successfully");
+        setResult(RESULT_OK, intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+
     }
 }

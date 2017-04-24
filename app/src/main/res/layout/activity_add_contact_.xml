@@ -8,6 +8,8 @@
 
 
     <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/edit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +24,26 @@
             android:textColor="#40C4FF"
             android:paddingTop="8dp"
             android:paddingLeft="6dp"
-            android:text="jklsd"/>
-        <EditText
-            android:id="@+id/name_edit_textt"
+            android:text="name"/>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="name"
-            />
+            android:layout_height="wrap_content">
+            <EditText
+                android:background="@drawable/edit_text"
+                android:id="@+id/name_edit_textt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:hint="name"
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:src="@drawable/ic_add_black_24dp"/>
+        </LinearLayout>
+
 
 
         <LinearLayout
@@ -58,8 +73,30 @@
             android:id="@+id/phone_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/phone_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/phoneEditTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deletePhoneOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,9 +125,30 @@
         <LinearLayout
             android:id="@+id/eamil_layoutt"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/eamil_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/enailEditTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deleteEamilOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,8 +179,29 @@
             android:id="@+id/address_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/address_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/addressEditTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deleteAdressOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,8 +233,29 @@
             android:id="@+id/im_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/im_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/IMEditTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deleteIMOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -185,8 +285,29 @@
             android:id="@+id/websit_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/websit_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/nameWebSiteTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deleteWebsiteOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -216,7 +337,30 @@
             android:id="@+id/relation_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/relation_layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:background="@drawable/edit_text"
+                    android:id="@+id/nameRelationTextOne"
+                    android:paddingLeft="6dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    />
+                <ImageView
+                    android:id="@+id/deleteRealationOne"
+                    android:layout_width="0dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_remove_black_24dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -242,13 +386,20 @@
             android:id="@+id/phonetic_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
             <EditText
-
+                android:background="@drawable/edit_text"
                 android:id="@+id/phoneticEditTextt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="phonetic name"/>
+                android:layout_weight="8"
+              />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:src="@drawable/ic_add_black_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -274,13 +425,23 @@
             android:id="@+id/notes_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
             <EditText
 
+                android:background="@drawable/edit_text"
                 android:id="@+id/notesEditTextt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="notes "/>
+                android:layout_weight="8"
+               />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:src="@drawable/ic_add_black_24dp"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -307,13 +468,21 @@
             android:id="@+id/org_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
             <EditText
 
+                android:background="@drawable/edit_text"
                 android:id="@+id/orgEditTextt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="org "/>
+                android:layout_weight="8"
+               />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:src="@drawable/ic_add_black_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -336,16 +505,25 @@
 
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/nickname_layoutt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
             <EditText
 
+                android:background="@drawable/edit_text"
                 android:id="@+id/nickNameEditTextt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="nick name "/>
+                android:layout_weight="8"
+               />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:src="@drawable/ic_add_black_24dp"/>
         </LinearLayout>
 
 

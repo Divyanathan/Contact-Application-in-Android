@@ -1,8 +1,9 @@
 package com.example.user.customlistview.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,9 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.customlistview.R;
+import com.example.user.customlistview.database.ContactDetailsTable;
+import com.example.user.customlistview.database.CotactTable;
 import com.example.user.customlistview.database.DataBaseHelper;
 import com.example.user.customlistview.jdo.ContactDetailsJDO;
-import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -27,6 +33,9 @@ import static com.example.user.customlistview.database.DataBaseHelper.COLUMN_CON
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NICK_NAME;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_ORGANIZATION;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_PHONETIC_NAME;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_ID;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_TYPE;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_VALUE;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_ADDRESS;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_EMAIL;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_IM;
@@ -47,10 +56,15 @@ public class EditContactActivity extends AppCompatActivity {
     EditText mNameEditText;
     String mContactId;
     String mContactName;
+    String mActionToPerfom;
+
+    String mOldValue = "";
+    String mNewValue = "";
 
     int mTextviewLength = 0;
     int mEditTextViewLength = 0;
 
+    Boolean isAutoFocusWant = false;
     ArrayList<TextView> mIdTextArrayList = new ArrayList<TextView>();
     ArrayList<EditText> mValueArralist = new ArrayList<EditText>();
     ArrayList<String> mTypeArrayList = new ArrayList<String>();
@@ -76,14 +90,30 @@ public class EditContactActivity extends AppCompatActivity {
 
     Boolean isSaveButtonPressed = false;
 
+    CotactTable mContactTable;
+    ContactDetailsTable mContactDetailsTable;
+
+    JSONArray mOldJasonArray = new JSONArray();
+    JSONObject mActualJasonObject = new JSONObject();
+
+    JSONArray mNewJosanArray = new JSONArray();
+    JSONObject mNewJasonObject = new JSONObject();
+
+    String mOldContactSting = "";
+    String mNewContactString = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        getWindow().getAttributes().windowAnimations = R.style.Fade;
         setContentView(R.layout.activity_edit_contact);
 
 
-        mContactDetails = (ArrayList<ContactDetailsJDO>) getIntent().getSerializableExtra("contact_details");
-
+        mContactTable = new CotactTable(this);
+        mContactTable.open();
+        mContactDetailsTable = new ContactDetailsTable(this);
+        mContactDetailsTable.open();
 
         mDataBaseHelper = new DataBaseHelper(this, null, null, 1);
 
@@ -155,9 +185,11 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_PHONE, "", mContactId);
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_PHONE, "", mContactId);
 
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_PHONE, "");
+
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_PHONE, "");
                 addPhoneDynamically(lDynamicLayout);
 
             }
@@ -166,10 +198,10 @@ public class EditContactActivity extends AppCompatActivity {
         mAddEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_EMAIL, "", mContactId);
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_EMAIL, "", mContactId);
-
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_EMAIL, "");
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_EMAIL, "");
 
                 addEmailDynamilcally(lDynamicLayout);
 
@@ -179,10 +211,10 @@ public class EditContactActivity extends AppCompatActivity {
         mAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_ADDRESS, "", mContactId);
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_ADDRESS, "", mContactId);
-
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_ADDRESS, "");
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_ADDRESS, "");
 
                 addAddressDynamilcally(lDynamicLayout);
 
@@ -192,10 +224,10 @@ public class EditContactActivity extends AppCompatActivity {
         mAddwebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_WEBSITE, "", mContactId);
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_WEBSITE, "", mContactId);
-
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_WEBSITE, "");
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_WEBSITE, "");
 
                 addWebsiteDynamilcally(lDynamicLayout);
 
@@ -205,10 +237,10 @@ public class EditContactActivity extends AppCompatActivity {
         mAddIML.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_IM, "", mContactId);
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_IM, "", mContactId);
-
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_IM, "");
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_IM, "");
 
                 addIMDynamilcally(lDynamicLayout);
 
@@ -219,26 +251,68 @@ public class EditContactActivity extends AppCompatActivity {
         mAddRelation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAutoFocusWant = true;
+                mContactDetailsTable.addContactDetails(COLUMN_TYPE_RELATION, "", mContactId);
 
-                mDataBaseHelper.addContactDetails(COLUMN_TYPE_RELATION, "", mContactId);
-
-                LinearLayout lDynamicLayout = addDynamicLayout(mDataBaseHelper.getContactDetailId(), COLUMN_TYPE_RELATION, "");
+                LinearLayout lDynamicLayout = addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_RELATION, "");
 
                 addRelationDynamilcally(lDynamicLayout);
 
             }
         });
 
+        mActionToPerfom = getIntent().getStringExtra("action");
 
-        mContactId = getIntent().getStringExtra("id");
-        mContactName = getIntent().getStringExtra("name");
+        if (mActionToPerfom.equals("edit")) {
+
+            mContactId = getIntent().getStringExtra("id");
+            mContactName = getIntent().getStringExtra("name");
+
+            mContactDetails = (ArrayList<ContactDetailsJDO>) getIntent().getSerializableExtra("contact_details");
+
+            getValue();
+
+        } else {
+
+            mContactId = "" + mContactTable.getContactId();
+
+
+            mIdTextArrayList.clear();
+            mTypeArrayList.clear();
+            mValueArralist.clear();
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_PHONE, "", mContactId);
+            addPhoneDynamically(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_PHONE, ""));
+
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_ADDRESS, "", mContactId);
+            addAddressDynamilcally(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_ADDRESS, ""));
+
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_EMAIL, "", mContactId);
+            addEmailDynamilcally(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_EMAIL, ""));
+
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_IM, "", mContactId);
+            addIMDynamilcally(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_IM, ""));
+
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_WEBSITE, "", mContactId);
+            addWebsiteDynamilcally(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_WEBSITE, ""));
+
+            mContactDetailsTable.addContactDetails(COLUMN_TYPE_RELATION, "", mContactId);
+            addRelationDynamilcally(addDynamicLayout(mContactDetailsTable.getContactDetailId(), COLUMN_TYPE_RELATION, ""));
+
+            getOldValues();
+
+
+        }
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         mEditLearLayout = (LinearLayout) findViewById(R.id.edit_layout);
 
 
-        getValue();
+        mOldContactSting = mNameEditText.getText().toString() + mPhoneticEditText.getText().toString() +
+                mNotesEditText.getText().toString() + mOrgEditTExt.getText().toString() + mNickNameEditText.getText().toString();
+
     }
 
 
@@ -255,16 +329,25 @@ public class EditContactActivity extends AppCompatActivity {
         ImageView lTest = new ImageView(EditContactActivity.this);
 
 
-        int lPadding_in_dp = 6;  // 6 dps
-        final float scale = getResources().getDisplayMetrics().density;
-        int lPadding_in_px = (int) (lPadding_in_dp * scale + 0.5f);
-
-
         for (int i = 0; i < mContactDetails.size(); i++) {
 
             mContactDetailsJDO = mContactDetails.get(i);
 
 
+            try {
+
+                mActualJasonObject.put(COLUMN_DETAIL_ID, mContactDetailsJDO.getCotactDetailstId());
+                mActualJasonObject.put(COLUMN_DETAIL_TYPE, mContactDetailsJDO.getCotactDetailstType());
+                mActualJasonObject.put(COLUMN_DETAIL_VALUE, mContactDetailsJDO.getCotactDetailstValue());
+                mOldJasonArray.put(mActualJasonObject);
+                mOldValue = mOldValue + mOldJasonArray.toString();
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
 /*
             mTitleTextView[i]=new TextView(this);
 */
@@ -406,15 +489,22 @@ public class EditContactActivity extends AppCompatActivity {
 
     LinearLayout addDynamicLayout(String pContacDetailtId, final String pType, String pValue) {
 
+        int lPadding_in_dp = 15;  // 6 dps
+        final float scale = getResources().getDisplayMetrics().density;
+        int lPadding_in_px = (int) (lPadding_in_dp * scale + 0.5f);
+
         final LinearLayout lDynamicLayout = new LinearLayout(this);
-        lDynamicLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        lDynamicLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        lDynamicLayout.setPadding(0, lPadding_in_dp, 0, 0);
         lDynamicLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 
         TextView lIdTextView = new TextView(this);
-        lIdTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        lIdTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         lIdTextView.setText(pContacDetailtId);
-        lIdTextView.setVisibility(View.INVISIBLE);
+        lIdTextView.setVisibility(View.GONE);
         lDynamicLayout.addView(lIdTextView);
 
         mIdTextArrayList.add(lIdTextView);
@@ -427,17 +517,26 @@ public class EditContactActivity extends AppCompatActivity {
 
             lValue.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
+
+
+        lValue.setBackgroundResource(R.drawable.edit_text);
         lValue.setText(pValue);
+        lValue.requestFocus();
+
+        if (isAutoFocusWant) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+
         lDynamicLayout.addView(lValue);
         mValueArralist.add(lValue);
 
         ImageView lDeleteImage = new ImageView(this);
 
         lDeleteImage.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        lDeleteImage.setPadding(0, 20, 0, 0);
         lDeleteImage.setId(mImageIdToDelete++);
-        Drawable res = getResources().getDrawable(R.drawable.ic_remove_black_24dp);
-        lDeleteImage.setImageDrawable(res);
+        Drawable lDrawbleDeleteImage = getResources().getDrawable(R.drawable.ic_remove_black_24dp);
+        lDeleteImage.setImageDrawable(lDrawbleDeleteImage);
 
         if (!pType.equals(COLUMN_CONTACT_ORGANIZATION) && !pType.equals(COLUMN_CONTACT_NOTES) && !pType.equals(COLUMN_CONTACT_NICK_NAME) && !pType.equals(COLUMN_CONTACT_PHONETIC_NAME)) {
 
@@ -451,7 +550,7 @@ public class EditContactActivity extends AppCompatActivity {
 
                 String lContactId = mIdTextArrayList.get(v.getId()).getText().toString();
 
-                mDataBaseHelper.deleteContactDetails(Integer.parseInt(lContactId));
+                mContactDetailsTable.deleteContactDetails(Integer.parseInt(lContactId));
 
                 lDynamicLayout.setVisibility(View.GONE);
 
@@ -472,50 +571,142 @@ public class EditContactActivity extends AppCompatActivity {
 
     }
 
+    void getOldValues(){
+
+        for (int i = 0; i < mIdTextArrayList.size(); i++) {
+
+
+            String lContactDetailId = mIdTextArrayList.get(i).getText().toString();
+            String lType = mTypeArrayList.get(i);
+            String lValue = mValueArralist.get(i).getText().toString();
+
+            try {
+
+                mActualJasonObject.put(COLUMN_DETAIL_ID, lContactDetailId);
+                mActualJasonObject.put(COLUMN_DETAIL_TYPE, lType);
+                mActualJasonObject.put(COLUMN_DETAIL_VALUE, lValue);
+                mOldJasonArray.put(mActualJasonObject);
+                mOldValue = mOldValue + mOldJasonArray.toString();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    void getTheNewValue() {
+
+
+        for (int i = 0; i < mIdTextArrayList.size(); i++) {
+
+
+            String lContactDetailId = mIdTextArrayList.get(i).getText().toString();
+            String lType = mTypeArrayList.get(i);
+            String lValue = mValueArralist.get(i).getText().toString();
+
+            try {
+
+                mNewJasonObject.put(COLUMN_DETAIL_ID, lContactDetailId);
+                mNewJasonObject.put(COLUMN_DETAIL_TYPE, lType);
+                mNewJasonObject.put(COLUMN_DETAIL_VALUE, lValue);
+                mNewJosanArray.put(mNewJasonObject);
+                mNewValue = mNewValue + mNewJosanArray.toString();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+
+            if (lValue != null && !lValue.isEmpty()) {
+                mContactDetailsTable.updateContactDeatails(lContactDetailId, lValue);
+
+//                        mCotactDetailsArrayList.add(new ContactDetailsJDO(lContactDetailId, mTypeArrayList.get(i), lValue));
+
+            } else {
+
+                mContactDetailsTable.deleteContactDetails(Integer.parseInt(lContactDetailId));
+            }
+
+        }
+        mNewContactString = mNameEditText.getText().toString() + mPhoneticEditText.getText().toString() +
+                mNotesEditText.getText().toString() + mOrgEditTExt.getText().toString() + mNickNameEditText.getText().toString();
+
+        mIdTextArrayList.clear();
+        mTypeArrayList.clear();
+        mValueArralist.clear();
+
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_button:
 
 
-                for (int i = 0; i < mIdTextArrayList.size(); i++) {
+                getTheNewValue();
 
-                    String lContactDetailId = mIdTextArrayList.get(i).getText().toString();
+                if (mActionToPerfom.equals("edit")) {
 
+                    mContactTable.updateContact(mContactId,
+                            mNameEditText.getText().toString(),
+                            mOrgEditTExt.getText().toString(),
+                            mNickNameEditText.getText().toString(),
+                            mPhoneticEditText.getText().toString(),
+                            mNotesEditText.getText().toString());
 
-                    String lValue = mValueArralist.get(i).getText().toString();
-                    if (lValue != null && !lValue.isEmpty()) {
-                        mDataBaseHelper.updateContactDeatails(lContactDetailId, mTypeArrayList.get(i), lValue);
-
-//                        mCotactDetailsArrayList.add(new ContactDetailsJDO(lContactDetailId, mTypeArrayList.get(i), lValue));
+                    if (mOldValue.equals(mNewValue) && mNewContactString.equals(mOldContactSting)) {
+                        finish();
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                     } else {
-
-                        mDataBaseHelper.deleteContactDetails(Integer.parseInt(lContactDetailId));
+//                        Toast.makeText(this, "different", Toast.LENGTH_SHORT).show();
                     }
 
+                } else {
+
+
+                    mContactTable.insertContatct(mContactId,
+                            mNameEditText.getText().toString(),
+                            mOrgEditTExt.getText().toString(),
+                            mNickNameEditText.getText().toString(),
+                            mPhoneticEditText.getText().toString(),
+                            mNotesEditText.getText().toString());
+
+                    if (mOldValue.equals(mNewValue) && mNewContactString!=null && !mNewContactString.isEmpty() ){
+                        customDialogBox();
+                    }
+                     else {
+
+                        mContactTable.open();
+                        mContactTable.deleteContactint(Integer.parseInt(mContactId));
+                        finish();
+                        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+                    }
                 }
 
-                mDataBaseHelper.updateContact(mContactId,
-                        mNameEditText.getText().toString(),
-                        mOrgEditTExt.getText().toString(),
-                        mNickNameEditText.getText().toString(),
-                        mPhoneticEditText.getText().toString(),
-                        mNotesEditText.getText().toString());
+                mContactDetailsTable.deleteNullValues();
 
-
-                mDataBaseHelper.deleteNullValues();
-
-
-                isSaveButtonPressed = true;
 
                 Intent intent = new Intent();
 
-                intent.putExtra("MESSAGE", "updated successfully");
+                if (mActionToPerfom.equals("edit")) {
+                    intent.putExtra("MESSAGE", "updated successfully");
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                } else {
+                    intent.putExtra("MESSAGE", "Added successfully");
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+                }
 
-                setResult(RESULT_OK, intent);
 
-                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -523,11 +714,97 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
 
-
     public boolean onSupportNavigateUp() {
 
-        finish();
+
+        if (mActionToPerfom.equals("edit")) {
+            getTheNewValue();
+            if (mOldValue.equals(mNewValue) && mNewContactString.equals(mOldContactSting)) {
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            }else {
+                customDialogBox();
+            }
+
+        }else {
+            getTheNewValue();
+
+            if (mOldValue.equals(mNewValue) && mNewContactString!=null && !mNewContactString.isEmpty() ){
+                customDialogBox();
+            }
+            else {
+
+                mContactTable.open();
+                mContactTable.deleteContactint(Integer.parseInt(mContactId));
+                finish();
+                overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            }
+        }
+
         return true;
 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        if (mActionToPerfom.equals("edit")) {
+            getTheNewValue();
+            if (mOldValue.equals(mNewValue) && mNewContactString.equals(mOldContactSting)) {
+                finish();
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            }else {
+
+                customDialogBox();
+
+            }
+
+        }else {
+            getTheNewValue();
+
+            if (mOldValue.equals(mNewValue) && mNewContactString!=null && !mNewContactString.isEmpty() ){
+                customDialogBox();
+            }
+            else {
+
+                mContactTable.open();
+                mContactTable.deleteContactint(Integer.parseInt(mContactId));
+                finish();
+                overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            }
+        }
+
+
+    }
+
+    void customDialogBox() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Want to quite DATA Didn't saved yet ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        if (mActionToPerfom.equals("edit")) {
+                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        } else {
+                            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                    }
+                });
+
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Save Data");
+        alert.show();
     }
 }

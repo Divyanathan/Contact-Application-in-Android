@@ -22,9 +22,10 @@
         </activity>
         <activity
             android:name=".ui.SingleContactActivityCollapsingToolBar"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ui.EditContactActivity" />
-        <activity android:name=".ui.AddContact_Activity"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ui.EditContactActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

@@ -1,12 +1,15 @@
 package com.example.user.customlistview.jdo;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by user on 18/04/17.
  */
 
-public class ContactJDO implements Serializable {
+public class ContactJDO implements Serializable,Comparable<ContactJDO> {
 
     String mCotactId;
     String mContactName;
@@ -89,5 +92,8 @@ public class ContactJDO implements Serializable {
     }
 
 
-
+    @Override
+    public int compareTo(@NonNull ContactJDO o) {
+        return this.getmContactName().toLowerCase().compareTo(o.getmContactName().toLowerCase());
+    }
 }

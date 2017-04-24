@@ -84,22 +84,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /**
      * Inserting the value
      */
-    public void addContact(int pContactId,String pContatctName,String pNickName,String pPhoneticName,String pContactPhoto,String pOrganization,String pNotes){
 
-        ContentValues lContactValue = new ContentValues();
-
-        lContactValue.put(COLUMN_CONTACT_ID, pContactId);
-        lContactValue.put(COLUMN_CONTACT_NAME, pContatctName);
-        lContactValue.put(COLUMN_CONTACT_PHONETIC_NAME, pPhoneticName);
-        lContactValue.put(COLUMN_CONTACT_NICK_NAME, pNickName);
-        lContactValue.put(COLUMN_CONTACT_PHOTO, pContactPhoto);
-        lContactValue.put(COLUMN_CONTACT_ORGANIZATION, pOrganization);
-        lContactValue.put(COLUMN_CONTACT_NOTES, pNotes);
-
-        SQLiteDatabase lDataBase = getWritableDatabase();
-        lDataBase.insert(TABLE_CONTACT, null, lContactValue);
-        lDataBase.close();
-    }
 
     public  void addContactDetails(String pType,String pValue,String pContactId){
 
@@ -114,24 +99,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         lDataBase.close();
     }
 
-    public Cursor getNamrAndImage()
-    {
-
-        SQLiteDatabase lDataBase = getReadableDatabase();
-       return lDataBase.query(TABLE_CONTACT, null, null, null, null, null, COLUMN_CONTACT_NAME + " ASC");
-
-    }
 
 
 
-    public Cursor getCotact(String pContactId) {
 
-        SQLiteDatabase lDataBase = getReadableDatabase();
-        Cursor lContactCursor = lDataBase.rawQuery("SELECT * FROM " + TABLE_CONTACT + " WHERE "+COLUMN_CONTACT_ID+"="+"'" + Integer.parseInt(pContactId)+ "'", null);
-
-      return lContactCursor;
-
-    }
     public Cursor getContactDetails(String pContactId){
 
         SQLiteDatabase lDataBase = getReadableDatabase();
@@ -152,39 +123,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         lDataBase.close();
     }
 
-    public void updateContact(String pContactId,String pName,String pOrg,String pNickName,String pPhonetic,String pNotes) {
 
-        ContentValues lContentValues = new ContentValues();
-
-        lContentValues.put(COLUMN_CONTACT_NAME, pName);
-        lContentValues.put(COLUMN_CONTACT_ORGANIZATION, pOrg);
-        lContentValues.put(COLUMN_CONTACT_NICK_NAME, pNickName);
-        lContentValues.put(COLUMN_CONTACT_PHONETIC_NAME, pPhonetic);
-        lContentValues.put(COLUMN_CONTACT_NOTES, pNotes);
-
-        SQLiteDatabase lDataBase = getWritableDatabase();
-
-        lDataBase.update(TABLE_CONTACT, lContentValues,COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
-
-        lDataBase.close();
-    }
-    public void  insertContatct(String pContactId,String pName,String pOrg,String pNickName,String pPhonetic,String pNotes){
-
-
-        ContentValues lContentValues = new ContentValues();
-
-        lContentValues.put(COLUMN_CONTACT_ID, pContactId);
-        lContentValues.put(COLUMN_CONTACT_NAME, pName);
-        lContentValues.put(COLUMN_CONTACT_PHONETIC_NAME, pPhonetic);
-        lContentValues.put(COLUMN_CONTACT_NICK_NAME, pNickName);
-        lContentValues.put(COLUMN_CONTACT_ORGANIZATION, pOrg);
-        lContentValues.put(COLUMN_CONTACT_NOTES, pNotes);
-
-        SQLiteDatabase lDataBase = getWritableDatabase();
-        lDataBase.insert(TABLE_CONTACT, null, lContentValues);
-        lDataBase.close();
-
-    }
 
     public String getContactDetailId(){
 
@@ -204,23 +143,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public int getContactId(){
-
-
-
-        SQLiteDatabase lDataBase = getReadableDatabase();
-
-        Cursor lGetContactIdCursor=lDataBase.query(TABLE_CONTACT, new  String[]{COLUMN_CONTACT_ID}, null, null, null, null, COLUMN_CONTACT_ID + " DESC");
-
-        if(lGetContactIdCursor.getCount()>0 && lGetContactIdCursor.moveToFirst()) {
-
-            return Integer.parseInt(lGetContactIdCursor.getString(0))+1;
-
-        }else {
-            return 1;
-        }
-
-    }
 
     public void deleteContactDetails(int pContactDetailId){
 
@@ -230,33 +152,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         lDataBase.close();
 
     }
-    public void deleteContactItem(String pContactId,String pColumn){
-
-        ContentValues lContentValues = new ContentValues();
-
-        lContentValues.put(pColumn,"\0");
-
-        SQLiteDatabase lDataBase = getWritableDatabase();
-
-        lDataBase.update(TABLE_CONTACT, lContentValues,COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
-
-        lDataBase.close();
-
-    }
-
-    public  Cursor retriveValue(String pContactId,String pType){
-
-        SQLiteDatabase lDataBase = getReadableDatabase();
 
 
-        String lSelectQuery = "SELECT * "+
-                " FROM "+TABLE_CONTACT_DETAILS+
-                " WHERE " + COLUMN_DETAIL_TYPE +" = \'" + pType+"\'"+
-                " AND "+COLUMN_CONTACT_ID+ " = "+pContactId;
 
-        return lDataBase.rawQuery(lSelectQuery, null);
 
-    }
     public  void deleteNullValues(){
 
 
