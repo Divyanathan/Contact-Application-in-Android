@@ -22,33 +22,34 @@ import java.util.ArrayList;
 public class SingleContactRecyclerAdapter extends RecyclerView.Adapter<SingleContactRecyclerAdapter.MyViewHolder> {
 
 
-    ArrayList<ContactDetailsJDO> mContactDetailArryList=new ArrayList<ContactDetailsJDO>();
+    ArrayList<ContactDetailsJDO> mContactDetailArryList = new ArrayList<ContactDetailsJDO>();
 
     ContactDetailsJDO mContactDetailsJDO;
-    Boolean mIsPhoneLableAssigned =false;
-    Boolean misEmailLableAssigned =false;
-    Boolean misAddressleAssigned =false;
-    Boolean mImLableAssigned =false;
-    Boolean mIsWebsiteleAssigned =false;
-    Boolean mIsRelationLableAssigned =false;
+    Boolean mIsPhoneLableAssigned = false;
+    Boolean misEmailLableAssigned = false;
+    Boolean misAddressleAssigned = false;
+    Boolean mImLableAssigned = false;
+    Boolean mIsWebsiteleAssigned = false;
+    Boolean mIsRelationLableAssigned = false;
 
 
     Context mContext;
 
     public SingleContactRecyclerAdapter(Context mContext, ArrayList<ContactDetailsJDO> pContactDetailArryList) {
-        mContactDetailArryList=pContactDetailArryList;
+        mContactDetailArryList = pContactDetailArryList;
 
         this.mContext = mContext;
     }
 
-    public class MyViewHolder extends  RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mTitleTextView;
-        TextView mValueTextView;
-        ImageView mCallImageView;
-        ImageView mSmsImageView;
+        public TextView mTitleTextView;
+        public TextView mValueTextView;
+        public ImageView mCallImageView;
+        public ImageView mSmsImageView;
 
         Context lContext;
+
         public MyViewHolder(View itemView) {
 
             super(itemView);
@@ -65,7 +66,7 @@ public class SingleContactRecyclerAdapter extends RecyclerView.Adapter<SingleCon
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_phone_nimber_row,parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_phone_nimber_row, parent, false);
 
         return new MyViewHolder(v);
     }
@@ -73,18 +74,18 @@ public class SingleContactRecyclerAdapter extends RecyclerView.Adapter<SingleCon
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        mContactDetailsJDO=new ContactDetailsJDO();
+        mContactDetailsJDO = new ContactDetailsJDO();
 
-        mContactDetailsJDO=mContactDetailArryList.get(position);
+        mContactDetailsJDO = mContactDetailArryList.get(position);
 
         holder.mValueTextView.setText(mContactDetailsJDO.getCotactDetailstValue());
 
         if (mContactDetailsJDO.getCotactDetailstType().equals("phone")) {
 
-            if(!mIsPhoneLableAssigned){
+            if (!mIsPhoneLableAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                mIsPhoneLableAssigned=true;
-            }else {
+                mIsPhoneLableAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
             Picasso.with(mContext)
@@ -102,13 +103,13 @@ public class SingleContactRecyclerAdapter extends RecyclerView.Adapter<SingleCon
                     .into(holder.mSmsImageView);
 
 
-        }else if(mContactDetailsJDO.getCotactDetailstType().equals("email")) {
+        } else if (mContactDetailsJDO.getCotactDetailstType().equals("email")) {
 
 
-            if(!misEmailLableAssigned){
+            if (!misEmailLableAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                misEmailLableAssigned=true;
-            }else {
+                misEmailLableAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
             Picasso.with(mContext)
@@ -126,44 +127,43 @@ public class SingleContactRecyclerAdapter extends RecyclerView.Adapter<SingleCon
                     .transform(new RoundedTransformation(100, 1))
                     .into(holder.mSmsImageView);
 
-        }else if(mContactDetailsJDO.getCotactDetailstType().equals("address")) {
+        } else if (mContactDetailsJDO.getCotactDetailstType().equals("address")) {
 
-            if(!misAddressleAssigned){
+            if (!misAddressleAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                misAddressleAssigned=true;
-            }else {
+                misAddressleAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
 
-        }else if(mContactDetailsJDO.getCotactDetailstType().equals("im")) {
+        } else if (mContactDetailsJDO.getCotactDetailstType().equals("im")) {
 
-            if(!mImLableAssigned){
+            if (!mImLableAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                mImLableAssigned=true;
-            }else {
+                mImLableAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
 
-        }else if(mContactDetailsJDO.getCotactDetailstType().equals("website")) {
+        } else if (mContactDetailsJDO.getCotactDetailstType().equals("website")) {
 
-            if(!mIsWebsiteleAssigned){
+            if (!mIsWebsiteleAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                mIsWebsiteleAssigned=true;
-            }else {
+                mIsWebsiteleAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
 
-        }else if(mContactDetailsJDO.getCotactDetailstType().equals("relation")) {
+        } else if (mContactDetailsJDO.getCotactDetailstType().equals("relation")) {
 
-            if(!mIsRelationLableAssigned){
+            if (!mIsRelationLableAssigned) {
                 holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
-                mIsRelationLableAssigned=true;
-            }else {
+                mIsRelationLableAssigned = true;
+            } else {
                 holder.mTitleTextView.setVisibility(View.GONE);
             }
 
-        }
-        else {
+        } else {
             holder.mTitleTextView.setText(mContactDetailsJDO.getCotactDetailstType());
         }
 

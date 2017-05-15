@@ -29,8 +29,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.example.user.customlistview.database.DataBaseHelper.COLUMN_CONTACT_NOTES;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NICK_NAME;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NOTES;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_ORGANIZATION;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_PHONETIC_NAME;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_ID;

@@ -72,6 +72,7 @@ public class ContactListRecylcerAdapter  extends RecyclerView.Adapter<ContactLis
 
         holder.mContactNameTextView.setText(mContactJDO.getmContactName());
         holder.mContactId.setText(mContactJDO.getmCotactId());
+
         Picasso.with(mContext)
                 .load(mContactJDO.getmCotactImage())
                 .placeholder(R.drawable.contact_img)
@@ -86,5 +87,18 @@ public class ContactListRecylcerAdapter  extends RecyclerView.Adapter<ContactLis
         return mContactJDOArrayList.size();
     }
 
+    public void changePositionOnMove(int pDraggingPosition,int pTargetPosition){
+        ContactJDO lDraggingConact=mContactJDOArrayList.get(pDraggingPosition);
+        ContactJDO lTargetContact=mContactJDOArrayList.get(pTargetPosition);
+        /**
+         * swaping the Contacts
+         */
+        mContactJDOArrayList.set(pDraggingPosition,lTargetContact);
+        mContactJDOArrayList.set(pTargetPosition,lDraggingConact);
+
+        notifyItemMoved(pDraggingPosition,pTargetPosition);
+
+
+    }
 
 }

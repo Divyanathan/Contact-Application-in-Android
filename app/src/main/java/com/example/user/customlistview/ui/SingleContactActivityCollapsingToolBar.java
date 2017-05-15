@@ -37,6 +37,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.user.customlistview.database.CotactTable.COLUMN_CONTACT_NICK_NAME;
+import static com.example.user.customlistview.database.CotactTable.COLUMN_CONTACT_ORGANIZATION;
+import static com.example.user.customlistview.database.CotactTable.COLUMN_CONTACT_PHOTO;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NAME;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NOTES;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_PHONETIC_NAME;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_ID;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_TYPE;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_DETAIL_VALUE;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_ADDRESS;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_EMAIL;
 import static com.example.user.customlistview.utility.UtilityClass.COLUMN_TYPE_IM;
@@ -121,6 +130,7 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity im
                             @Override
                             public void onClick(View v) {
                                 Toast.makeText(SingleContactActivityCollapsingToolBar.this, "text" + lContactValue, Toast.LENGTH_SHORT).show();
+
 
                             }
                         });
@@ -209,48 +219,48 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity im
 
         lNameAndImageCursor.moveToFirst();
 
-        mCotactName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_NAME));
+        mCotactName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_NAME));
 
-        collapsingToolbarLayout.setTitle(lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_NAME)));
+        collapsingToolbarLayout.setTitle(lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_NAME)));
 
-        String lContactImage = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_PHOTO));
+        String lContactImage = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_PHOTO));
 
-        String lPhoneticName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_PHONETIC_NAME));
+        String lPhoneticName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_PHONETIC_NAME));
 
         if (lPhoneticName != null && !lPhoneticName.isEmpty() && !lPhoneticName.equals("null")) {
 
-            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", mDataBaseHelper.COLUMN_CONTACT_PHONETIC_NAME, lPhoneticName));
+            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", COLUMN_CONTACT_PHONETIC_NAME, lPhoneticName));
         }
 
 
 
-        String lNickName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_NICK_NAME));
+        String lNickName = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_NICK_NAME));
 
 
         if (lNickName != null && !lNickName.isEmpty() && !lNickName.equals("null")) {
 
-            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", mDataBaseHelper.COLUMN_CONTACT_NICK_NAME, lNickName));
+            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", COLUMN_CONTACT_NICK_NAME, lNickName));
 
 
         }
 
-        String lOrganiztion = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_ORGANIZATION));
+        String lOrganiztion = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_ORGANIZATION));
 
         if (lOrganiztion != null && !lOrganiztion.isEmpty() && !lOrganiztion.equals("null")) {
 
 
-            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", mDataBaseHelper.COLUMN_CONTACT_ORGANIZATION, lOrganiztion));
+            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", COLUMN_CONTACT_ORGANIZATION, lOrganiztion));
 
 
         }
 
-        String lNotes = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(mDataBaseHelper.COLUMN_CONTACT_NOTES));
+        String lNotes = lNameAndImageCursor.getString(lNameAndImageCursor.getColumnIndex(COLUMN_CONTACT_NOTES));
 
 //        mContactTable.close();
 
         if (lNotes != null && !lNotes.isEmpty() && !lNotes.equals("null")) {
 
-            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", mDataBaseHelper.COLUMN_CONTACT_NOTES, lNotes));
+            mCotactDetailsArrayList.add(new ContactDetailsJDO("no_id", COLUMN_CONTACT_NOTES, lNotes));
 
         }
 
@@ -271,9 +281,9 @@ public class SingleContactActivityCollapsingToolBar extends AppCompatActivity im
 
 
                 mCotactDetailsArrayList.add(new ContactDetailsJDO(
-                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(mDataBaseHelper.COLUMN_DETAIL_ID)),
-                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(mDataBaseHelper.COLUMN_DETAIL_TYPE)),
-                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(mDataBaseHelper.COLUMN_DETAIL_VALUE))));
+                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(COLUMN_DETAIL_ID)),
+                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(COLUMN_DETAIL_TYPE)),
+                        lContactDetailsCursor.getString(lContactDetailsCursor.getColumnIndex(COLUMN_DETAIL_VALUE))));
 
 
             } while (lContactDetailsCursor.moveToNext());

@@ -26,6 +26,18 @@ public class ContactDetailsTable {
         this.mContext = mContext;
     }
 
+    public static void createTable(SQLiteDatabase pDataBase){
+
+        String lContactDetailQuery = "create table " + TABLE_CONTACT_DETAILS + "(" +
+                COLUMN_DETAIL_ID + " integer primary key autoincrement," +
+                COLUMN_DETAIL_TYPE + " text ," +
+                COLUMN_DETAIL_VALUE + " text ," +
+                COLUMN_CONTACT_ID + " text" +
+                ");";
+        pDataBase.execSQL(lContactDetailQuery);
+
+    }
+
     public void open(){
 
         mDbHelper = new DataBaseHelper(mContext,null,null,1);

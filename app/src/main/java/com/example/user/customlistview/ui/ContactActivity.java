@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,14 @@ import com.example.user.customlistview.jdo.ContactJDO;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static android.support.v7.widget.helper.ItemTouchHelper.DOWN;
+import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
+import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
+import static android.support.v7.widget.helper.ItemTouchHelper.UP;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_ID;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_NAME;
+import static com.example.user.customlistview.utility.UtilityClass.COLUMN_CONTACT_PHOTO;
+
 public class ContactActivity extends AppCompatActivity  implements View.OnClickListener {
 
 
@@ -41,22 +51,30 @@ public class ContactActivity extends AppCompatActivity  implements View.OnClickL
 
     RecyclerView mContactRecyclerView;
     ContactListRecylcerAdapter mContactListRecylcerAdapter;
+    LinearLayoutManager mRecylerLayoutManager;
+
 
     public static final String DATA_RETRIVING_SHARED_PREFRENCE = "contact_shared_prefrence";
 
 
     ArrayList<ContactJDO> mContactJDOArrayList=new ArrayList<ContactJDO>();
 
+    final static String TAG="Contact Activity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
+        Log.e(TAG, "onCreate: " );
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mContactTable=new CotactTable(this);
         mContactDetailsTable=new ContactDetailsTable(this);
+
+         mRecylerLayoutManager = new LinearLayoutManager(this);
+        mRecylerLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         mMataBaseHelper = new DataBaseHelper(this, null, null, 1);
 
@@ -82,7 +100,48 @@ public class ContactActivity extends AppCompatActivity  implements View.OnClickL
                 })
         );
 
+        /**
+         * lisetner for swiping and daragging and dropping.....
+         */
 
+        ItemTouchHelper lItemTouchHelper=new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(UP|DOWN,LEFT|RIGHT);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+
+                Log.d(TAG, "onMove: ");
+                int lDragingPosition=viewHolder.getLayoutPosition();
+                int lTargetingPosition=target.getLayoutPosition();
+
+                Log.d(TAG, "onMove: "+lDragingPosition+" "+lTargetingPosition);
+                mContactListRecylcerAdapter.changePositionOnMove(lDragingPosition,lTargetingPosition);
+                return false;
+            }
+
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    Log.d(TAG, "onSwiped: left");
+
+                int lLoyoutPosition=viewHolder.getLayoutPosition();
+                if (direction==LEFT){
+//                    mContactJDOArrayList.get(lLoyoutPosition).g
+                    Log.d(TAG, "onSwiped: left");
+                }else {
+                    Log.d(TAG, "onSwiped: Right");
+                }
+
+            }
+
+        });
+
+        lItemTouchHelper.attachToRecyclerView(mContactRecyclerView);
+
+       
 
 
         SharedPreferences sharedPrefs = getSharedPreferences(DATA_RETRIVING_SHARED_PREFRENCE, MODE_PRIVATE);
@@ -118,9 +177,9 @@ public class ContactActivity extends AppCompatActivity  implements View.OnClickL
 
             do {
                 ContactJDO mContactJDO=new ContactJDO();
-                mContactJDO.setmCotactId(lContactCursor.getString(lContactCursor.getColumnIndex(mMataBaseHelper.COLUMN_CONTACT_ID)));
-                mContactJDO.setmContactName(lContactCursor.getString(lContactCursor.getColumnIndex(mMataBaseHelper.COLUMN_CONTACT_NAME)));
-                mContactJDO.setmCotactImage(lContactCursor.getString(lContactCursor.getColumnIndex(mMataBaseHelper.COLUMN_CONTACT_PHOTO)));
+                mContactJDO.setmCotactId(lContactCursor.getString(lContactCursor.getColumnIndex(COLUMN_CONTACT_ID)));
+                mContactJDO.setmContactName(lContactCursor.getString(lContactCursor.getColumnIndex(COLUMN_CONTACT_NAME)));
+                mContactJDO.setmCotactImage(lContactCursor.getString(lContactCursor.getColumnIndex(COLUMN_CONTACT_PHOTO)));
                 mContactJDOArrayList.add(mContactJDO);
 
             } while (lContactCursor.moveToNext());
@@ -129,11 +188,15 @@ public class ContactActivity extends AppCompatActivity  implements View.OnClickL
 
         mContactTable.close();
         Collections.sort(mContactJDOArrayList);
-        mContactListRecylcerAdapter = new ContactListRecylcerAdapter(this, new ArrayList<ContactJDO>(mContactJDOArrayList));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mContactRecyclerView.setLayoutManager(layoutManager);
-        mContactRecyclerView.setAdapter(mContactListRecylcerAdapter);
+
+        if(mContactListRecylcerAdapter==null) {
+            mContactListRecylcerAdapter = new ContactListRecylcerAdapter(this, mContactJDOArrayList);
+            mContactRecyclerView.setLayoutManager(mRecylerLayoutManager);
+            mContactRecyclerView.setAdapter(mContactListRecylcerAdapter);
+        }else {
+            mContactListRecylcerAdapter.notifyDataSetChanged();
+        }
+
 
     }
 
@@ -571,5 +634,44 @@ public class ContactActivity extends AppCompatActivity  implements View.OnClickL
         intent.putExtra("action", "add");
         startActivityForResult(intent, 2);// Activity is started with requestCode 2
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
+    }
+
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart: " );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(TAG, "onStart: " );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume: " );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.e(TAG, "onPause: " );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop: " );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy: " );
     }
 }

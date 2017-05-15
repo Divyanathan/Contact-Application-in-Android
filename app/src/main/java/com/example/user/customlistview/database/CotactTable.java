@@ -26,21 +26,41 @@ public class CotactTable {
     private DataBaseHelper mDbHelper;
 
     public CotactTable(Context pContext) {
-        mContext=pContext;
+        mContext = pContext;
     }
 
 
-    public void open(){
+    public void open() {
 
-        mDbHelper = new DataBaseHelper(mContext,null,null,1);
+        mDbHelper = new DataBaseHelper(mContext, null, null, 1);
         lDataBase = mDbHelper.getWritableDatabase();
     }
-    public void close() {
+
+    public static void creatTable(SQLiteDatabase pDataBase) {
+
+
+        String lContactQuery = "create table " + TABLE_CONTACT + "(" +
+                COLUMN_CONTACT_ID + " integer primary key ," +
+                COLUMN_CONTACT_NAME + " text ," +
+                COLUMN_CONTACT_PHONETIC_NAME + " text ," +
+                COLUMN_CONTACT_NICK_NAME + " text ," +
+                COLUMN_CONTACT_PHOTO + " text," +
+                COLUMN_CONTACT_ORGANIZATION + " text," +
+                COLUMN_CONTACT_NOTES + " text" +
+
+
+                ");";
+        pDataBase.execSQL(lContactQuery);
+
+    }
+
+    public void close()
+    {
         mDbHelper.close();
     }
 
 
-    public void addContact(int pContactId,String pContatctName,String pNickName,String pPhoneticName,String pContactPhoto,String pOrganization,String pNotes){
+    public void addContact(int pContactId, String pContatctName, String pNickName, String pPhoneticName, String pContactPhoto, String pOrganization, String pNotes) {
 
         ContentValues lContactValue = new ContentValues();
 
@@ -57,8 +77,7 @@ public class CotactTable {
     }
 
 
-    public Cursor getNamrAndImage()
-    {
+    public Cursor getNamrAndImage() {
 
 
         return lDataBase.query(TABLE_CONTACT, null, null, null, null, null, COLUMN_CONTACT_NAME + " ASC");
@@ -66,19 +85,16 @@ public class CotactTable {
     }
 
 
-
-
-
     public Cursor getCotact(String pContactId) {
 
 
-        Cursor lContactCursor = lDataBase.rawQuery("SELECT * FROM " + TABLE_CONTACT + " WHERE "+COLUMN_CONTACT_ID+"="+"'" + Integer.parseInt(pContactId)+ "'", null);
+        Cursor lContactCursor = lDataBase.rawQuery("SELECT * FROM " + TABLE_CONTACT + " WHERE " + COLUMN_CONTACT_ID + "=" + "'" + Integer.parseInt(pContactId) + "'", null);
 
         return lContactCursor;
 
     }
 
-    public void updateContact(String pContactId,String pName,String pOrg,String pNickName,String pPhonetic,String pNotes) {
+    public void updateContact(String pContactId, String pName, String pOrg, String pNickName, String pPhonetic, String pNotes) {
 
         ContentValues lContentValues = new ContentValues();
 
@@ -89,12 +105,12 @@ public class CotactTable {
         lContentValues.put(COLUMN_CONTACT_NOTES, pNotes);
 
 
-
-        lDataBase.update(TABLE_CONTACT, lContentValues,COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
+        lDataBase.update(TABLE_CONTACT, lContentValues, COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
 
         lDataBase.close();
     }
-    public void  insertContatct(String pContactId,String pName,String pOrg,String pNickName,String pPhonetic,String pNotes){
+
+    public void insertContatct(String pContactId, String pName, String pOrg, String pNickName, String pPhonetic, String pNotes) {
 
 
         ContentValues lContentValues = new ContentValues();
@@ -112,26 +128,23 @@ public class CotactTable {
 
     }
 
-    public int getContactId(){
+    public int getContactId() {
 
 
+        Cursor lGetContactIdCursor = lDataBase.query(TABLE_CONTACT, new String[]{COLUMN_CONTACT_ID}, null, null, null, null, COLUMN_CONTACT_ID + " DESC");
 
+        if (lGetContactIdCursor.getCount() > 0 && lGetContactIdCursor.moveToFirst()) {
 
-        Cursor lGetContactIdCursor=lDataBase.query(TABLE_CONTACT, new  String[]{COLUMN_CONTACT_ID}, null, null, null, null, COLUMN_CONTACT_ID + " DESC");
+            return Integer.parseInt(lGetContactIdCursor.getString(0)) + 1;
 
-        if(lGetContactIdCursor.getCount()>0 && lGetContactIdCursor.moveToFirst()) {
-
-            return Integer.parseInt(lGetContactIdCursor.getString(0))+1;
-
-        }else {
+        } else {
             return 1;
         }
 
     }
 
 
-    public void deleteContactint (int pContactDetailId){
-
+    public void deleteContactint(int pContactDetailId) {
 
 
         lDataBase.execSQL("DELETE FROM " + TABLE_CONTACT + " WHERE " + COLUMN_CONTACT_ID + "=\"" + pContactDetailId + "\";");
@@ -139,14 +152,14 @@ public class CotactTable {
 
     }
 
-    public void deleteContactItem(String pContactId,String pColumn){
+    public void deleteContactItem(String pContactId, String pColumn) {
 
         ContentValues lContentValues = new ContentValues();
 
-        lContentValues.put(pColumn,"\0");
+        lContentValues.put(pColumn, "\0");
 
 
-        lDataBase.update(TABLE_CONTACT, lContentValues,COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
+        lDataBase.update(TABLE_CONTACT, lContentValues, COLUMN_CONTACT_ID + " = ?", new String[]{pContactId});
 
         lDataBase.close();
 
